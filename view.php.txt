@@ -1,0 +1,40 @@
+Table myTable;
+int grey = 200;
+
+void setup(){
+  size(1200, 300);
+  myTable = loadTable("cities.tsv", "header");
+  textSize(32);
+}
+
+
+void draw(){
+  background(50);
+  fill(grey);
+  for (int i = 0;  i < myTable.getRowCount(); i++)  {
+      TableRow line =myTable.getRow(i);
+      rect(120*i, 50, sqrt(line.getInt("area")), sqrt(line.getInt("area")));
+  }
+  
+  int select = int(mouseX/120); 
+  TableRow town = myTable.getRow(select);
+  String labelText = town.getString("city") + ", Population: " + town.getString("population");
+  float density = town.getInt("population")/town.getInt("area");
+  String densityText = town.getString("city") + ", Population Density: " + density + " people/km2";
+    
+  if (mousePressed == true) {
+    text(densityText, 20, 250);
+  } else {
+    text(labelText, 20, 250);
+  }
+}
+
+void keyPressed(){
+  if (key == CODED){
+    if (keyCode == UP){
+      grey += 5;
+    } else if (keyCode == DOWN){
+      grey -= 5;
+    }
+  }
+}
